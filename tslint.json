@@ -1,0 +1,15 @@
+{
+    "extends": "tslint:latest",
+    "rules": {
+        "no-unused-variable": true,
+        "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore"],
+        "eofline": false,
+        "interface-name": false,
+        "object-literal-sort-keys": false,
+        "quotemark": [
+            true,
+            "single"
+        ]
+    },
+    "rulesDirectory": []
+}
