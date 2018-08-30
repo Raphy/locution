@@ -1,37 +1,35 @@
 {
-    "name": "locution",
-    "version": "1.0.0",
-    "description": "A library to evaluate string expressions",
-    "scripts": {
-        "build": "rm -rf ./build && tsc",
-        "lint": "tslint --target verbose src/**/*.ts",
-        "test": "jest",
-        "release": "yarn run lint && yarn run test && standard-version",
-        "publish": "yarn run build && yarn publish --access=public dist"
+  "name": "locution",
+  "version": "1.0.5",
+  "description": "A library to evaluate string expressions",
+  "scripts": {
+    "build": "rm -rf ./dist && tsc && cp package.json README.md CHANGELOG.md ./dist/",
+    "lint": "tslint --target verbose src/**/*.ts",
+    "test": "jest"
+  },
+  "author": "Raphael De Freitas <raphael@de-freitas.net>",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/jest": "^23.3.1",
+    "jest": "^23.5.0",
+    "standard-version": "^4.4.0",
+    "ts-jest": "^23.1.4",
+    "ts-lint": "^4.5.1",
+    "ts-node": "^7.0.0",
+    "typescript": "^2.9.2"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
     },
-    "author": "Raphael De Freitas <raphael@de-freitas.net>",
-    "license": "MIT",
-    "devDependencies": {
-        "@types/jest": "^23.3.1",
-        "jest": "^23.5.0",
-        "standard-version": "^4.4.0",
-        "ts-jest": "^23.1.4",
-        "ts-lint": "^4.5.1",
-        "ts-node": "^7.0.0",
-        "typescript": "^2.9.2"
-    },
-    "jest": {
-        "transform": {
-            "^.+\\.tsx?$": "ts-jest"
-        },
-        "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
-        "moduleFileExtensions": [
-            "ts",
-            "tsx",
-            "js",
-            "jsx",
-            "json",
-            "node"
-        ]
-    }
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ]
+  }
 }
