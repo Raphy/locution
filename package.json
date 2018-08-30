@@ -1,13 +1,13 @@
 {
   "name": "locution",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A library to evaluate string expressions",
   "scripts": {
-    "build": "rm -rf ./build && tsc",
+    "build": "rm -rf ./dist && tsc && cp package.json ./dist/",
     "lint": "tslint --target verbose src/**/*.ts",
     "test": "jest",
     "release": "yarn run lint && yarn run test && standard-version -a",
-    "publish": "yarn run build && yarn publish --access=public build"
+    "publish": "yarn run build && yarn publish --access=public dist"
   },
   "author": "Raphael De Freitas <raphael@de-freitas.net>",
   "license": "MIT",
