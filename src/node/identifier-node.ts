@@ -1,3 +1,4 @@
+import { Identifiers } from '../identifiers';
 import { Node } from './node';
 
 export class IdentifierNode extends Node {
@@ -5,7 +6,7 @@ export class IdentifierNode extends Node {
         super({}, {identifier});
     }
 
-    public evaluate(identifiers: object): any {
-        return (<any>identifiers)[(<any>this.attributes)['identifier']];
+    public evaluate(_, identifiers: Identifiers): any {
+        return identifiers[this.attributes.identifier];
     }
 }

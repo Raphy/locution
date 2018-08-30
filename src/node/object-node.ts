@@ -1,3 +1,5 @@
+import { Functions } from '../functions';
+import { Identifiers } from '../identifiers';
 import { Node } from './node';
 
 export class ObjectNode extends Node {
@@ -13,17 +15,17 @@ export class ObjectNode extends Node {
         this._currentIndex++;
     }
 
-    public evaluate(identifiers: object): object {
-        let nodeNamesPairs: string[][] = [];
+    public evaluate(functions: Functions, identifiers: Identifiers): object {
+        const nodeNamesPairs: string[][] = [];
         const properties = Object.getOwnPropertyNames(this.nodes);
         for (let i = 0; i < properties.length; i += 2) {
             nodeNamesPairs.push(properties.slice(i, i + 2));
         }
 
-        let object: object = {};
+        const object: object = {};
         nodeNamesPairs.map((nodeNamesPair: string[]) => {
-            const key = this.nodes[nodeNamesPair[0]].evaluate(identifiers);
-            object[key] = this.nodes[nodeNamesPair[1]].evaluate(identifiers);
+            const key = this.nodes[nodeNamesPair[0]].evaluate(functions, identifiers);
+            object[key] = this.nodes[nodeNamesPair[1]].evaluate(functions, identifiers);
         });
 
         return object;

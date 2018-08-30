@@ -9,7 +9,8 @@
         "quotemark": [
             true,
             "single"
-        ]
+        ],
+        "no-bitwise": false
     },
     "rulesDirectory": []
 }

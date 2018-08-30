@@ -1,3 +1,5 @@
+import { Functions } from '../functions';
+import { Identifiers } from '../identifiers';
 import { Node } from './node';
 
 export class ArrayNode extends Node {
@@ -12,17 +14,11 @@ export class ArrayNode extends Node {
         this._nextIndex++;
     }
 
-    public addItems(nodes: Node[]) {
-        nodes.map((node: Node) => {
-            this.addItem(node);
-        });
-    }
-
-    public evaluate(identifiers: object): any[] {
+    public evaluate(functions: Functions, identifiers: Identifiers): any[] {
         const results: any[] = [];
 
         Object.getOwnPropertyNames(this.nodes).sort().map((index: string) => {
-            results.push(this.nodes[index].evaluate(identifiers));
+            results.push(this.nodes[index].evaluate(functions, identifiers));
         });
 
         return results;

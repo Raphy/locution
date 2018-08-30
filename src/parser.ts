@@ -1,4 +1,6 @@
 import { SyntaxError } from './error';
+import { Functions } from './functions';
+import { Identifiers } from './identifiers';
 import { ArgumentsNode, ArrayCallNode, ArrayNode, BinaryNode, ConditionalNode, ConstantNode, FunctionNode, IdentifierNode, MethodCallNode, Node, ObjectNode, PropertyCallNode, UnaryNode } from './node';
 import { Token, TokenStream, TokenType } from './token';
 
@@ -39,7 +41,10 @@ export class Parser {
         '**': {precedence: 200, associativity: 'right'},
     };
 
-    public parse(tokenStream: TokenStream, identifiers: object): Node {
+    constructor(private _functions: Functions) {
+    }
+
+    public parse(tokenStream: TokenStream, identifiers: Identifiers): Node {
         const rootNode: Node = this._parseExpression(tokenStream, identifiers);
         if (tokenStream.token.type !== TokenType.END_OF_EXPRESSION) {
             throw new SyntaxError(`Unexpected token "${tokenStream.token.type}" of value "${tokenStream.token.value}"`, tokenStream.token.position, tokenStream.expression);
@@ -48,7 +53,7 @@ export class Parser {
         return rootNode;
     }
 
-    private _parseExpression(tokenStream: TokenStream, identifiers: object, precedence: number = 0): Node {
+    private _parseExpression(tokenStream: TokenStream, identifiers: Identifiers, precedence: number = 0): Node {
         let expr: Node = this._getPrimaryNode(tokenStream, identifiers);
         let token: Token = tokenStream.token;
 
@@ -68,7 +73,7 @@ export class Parser {
         return expr;
     }
 
-    private _getPrimaryNode(tokenStream: TokenStream, identifiers: object): Node {
+    private _getPrimaryNode(tokenStream: TokenStream, identifiers: Identifiers): Node {
         const token: Token = tokenStream.token;
 
         if (token.isEquals(TokenType.OPERATOR) && this._unaryOperators.hasOwnProperty(token.value)) {
@@ -89,7 +94,7 @@ export class Parser {
         return this._parsePrimaryExpression(tokenStream, identifiers);
     }
 
-    private _parsePrimaryExpression(tokenStream: TokenStream, identifiers: object): Node {
+    private _parsePrimaryExpression(tokenStream: TokenStream, identifiers: Identifiers): Node {
         const token: Token = tokenStream.token;
         let node: Node;
 
@@ -111,8 +116,7 @@ export class Parser {
 
                     default:
                         if ('(' === tokenStream.token.value) {
-                            // todo: use functions registry instead of identifiers
-                            if (!identifiers.hasOwnProperty(token.value)) {
+                            if (!this._functions.hasOwnProperty(token.value)) {
                                 throw new SyntaxError(`The function "${token.value}" does not exist`, token.position, tokenStream.expression);
                             }
 
@@ -149,7 +153,7 @@ export class Parser {
         return this._parsePostfixExpression(tokenStream, identifiers, node);
     }
 
-    private _parsePostfixExpression(tokenStream: TokenStream, identifiers: object, node: Node): Node {
+    private _parsePostfixExpression(tokenStream: TokenStream, identifiers: Identifiers, node: Node): Node {
         let token: Token = tokenStream.token;
         while (TokenType.PUNCTUATION == token.type) {
             if ('.' === token.value) {
@@ -188,7 +192,7 @@ export class Parser {
         return node;
     }
 
-    private _parseArguments(tokenStream: TokenStream, identifiers: object): ArgumentsNode {
+    private _parseArguments(tokenStream: TokenStream, identifiers: Identifiers): ArgumentsNode {
         const args = new ArgumentsNode();
 
         tokenStream.expect(TokenType.PUNCTUATION, '(', 'A list of arguments must begin with an opening parenthesis');
@@ -204,7 +208,7 @@ export class Parser {
         return args;
     }
 
-    private _parseConditionalExpression(tokenStream: TokenStream, identifiers: object, expr: Node): Node {
+    private _parseConditionalExpression(tokenStream: TokenStream, identifiers: Identifiers, expr: Node): Node {
         let trueNode: Node = new ConstantNode(null);
         let falseNode: Node = new ConstantNode(null);
 
@@ -228,7 +232,7 @@ export class Parser {
         return expr;
     }
 
-    private _parseArrayExpression(tokenStream: TokenStream, identifiers: object): Node {
+    private _parseArrayExpression(tokenStream: TokenStream, identifiers: Identifiers): Node {
         tokenStream.expect(TokenType.PUNCTUATION, '[', 'An array element was expected');
 
         const node: ArrayNode = new ArrayNode();
@@ -251,7 +255,7 @@ export class Parser {
         return node;
     }
 
-    private _parseObjectExpression(tokenStream: TokenStream, identifiers: object): Node {
+    private _parseObjectExpression(tokenStream: TokenStream, identifiers: Identifiers): Node {
         tokenStream.expect(TokenType.PUNCTUATION, '{', 'A hash element was expected');
 
         const node = new ObjectNode();

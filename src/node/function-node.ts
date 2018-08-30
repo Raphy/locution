@@ -1,3 +1,5 @@
+import { Functions } from '../functions';
+import { Identifiers } from '../identifiers';
 import { ArgumentsNode } from './arguments-node';
 import { Node } from './node';
 
@@ -6,16 +8,7 @@ export class FunctionNode extends Node {
         super({args}, {name});
     }
 
-    public evaluate(identifiers: object): any {
-        // todo: enable a function registry instead of using identifiers
-
-        // todo: check if is a function
-        /*
-        function isFunction(functionToCheck) {
-            return functionToCheck && {}.toString.call(functionToCheck) === '[object Function]';
-        }
-         */
-
-        return (<any>identifiers)[(<any>this.attributes)['name']].apply(null, (<any>this.nodes)['args'].evaluate(identifiers));
+    public evaluate(functions: Functions, identifiers: Identifiers): any {
+        return functions[this.attributes.name].apply(null, this.nodes.args.evaluate(functions, identifiers));
     }
 }

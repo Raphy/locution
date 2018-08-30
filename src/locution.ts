@@ -1,29 +1,18 @@
+import { Functions } from './functions';
+import { Identifiers } from './identifiers';
 import { Lexer } from './lexer';
-import { Node } from './node';
 import { Parser } from './parser';
 
-/**
- *
- */
 export class Locution {
-    /**
-     * Evaluate an expression with a given identifiers
-     *
-     * @param expression
-     * @param identifiers
-     */
-    public evaluate(expression: string, identifiers: object = {}): any {
-        // console.log('Locution Evaluate', expression, identifiers);
+    private _lexer: Lexer = new Lexer();
 
-        const lexer = new Lexer();
-        const tokenStream = lexer.tokenize(expression);
-        // console.log('TokenStream', tokenStream, tokenStream.token);
+    private _parser: Parser;
 
-        const parser = new Parser();
-        const rootNode: Node = parser.parse(tokenStream, identifiers);
+    constructor(private _functions: Functions = {}) {
+        this._parser = new Parser(this._functions);
+    }
 
-        // console.log('RootNode', rootNode, JSON.stringify(rootNode));
-
-        return rootNode.evaluate(identifiers);
+    public evaluate(expression: string, identifiers: Identifiers = {}): any {
+        return this._parser.parse(this._lexer.tokenize(expression), identifiers).evaluate(this._functions, identifiers);
     }
 }
