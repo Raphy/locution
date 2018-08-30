@@ -53,6 +53,9 @@ export class Lexer {
             }
 
             position += matchResult[0].length;
+            while (matchResult = expression.substring(position).match(/\s+/y)) {
+                position += matchResult[0].length;
+            }
             matchResult = null;
         }
 
