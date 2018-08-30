@@ -1,6 +1,6 @@
 {
   "name": "locution",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "A library to evaluate string expressions",
   "scripts": {
     "build": "rm -rf ./dist && tsc && cp package.json README.md CHANGELOG.md ./dist/",
