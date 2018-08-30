@@ -52,10 +52,32 @@ const tests = [
 ];
 
 
+const assert = (actual: any, expected: any) => {
+    if (typeof expected === 'object' && typeof expected === 'object') {
+        const expectedProperties = Object.getOwnPropertyNames(expected);
+        const actualProperties = Object.getOwnPropertyNames(actual);
+
+        if (expectedProperties.length !== actualProperties.length) {
+            return false;
+        }
+
+        let isErred: boolean = false;
+        expectedProperties.map((property: string) => {
+            if (actualProperties.indexOf(property) === -1 && isErred === false) {
+                isErred = true;
+            }
+        });
+
+        return !isErred;
+    }
+
+    return actual === expected;
+};
+
 tests.map((test) => {
     try {
         const result = locution.evaluate(test.expression, test.identifiers);
-        console.log(`${result == test.result ? '[✓]' : '[x]'} \`${test.expression}\``, result, test.result);
+        console.log(`${assert(result, test.result) ? '[✓]' : '[x]'} \`${test.expression}\``, result, test.result);
     } catch (e) {
         console.log(`[x] \`${test.expression}\` => ${e.message}`);
     }

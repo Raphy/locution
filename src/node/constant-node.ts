@@ -6,6 +6,6 @@ export class ConstantNode extends Node {
     }
 
     public evaluate(): any {
-        return (<any>this.attributes)['value'];
+        return this.attributes.value;
     }
 }

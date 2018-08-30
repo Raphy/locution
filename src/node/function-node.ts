@@ -1,3 +1,5 @@
+import { Functions } from '../functions';
+import { Identifiers } from '../identifiers';
 import { ArgumentsNode } from './arguments-node';
 import { Node } from './node';
 
@@ -6,7 +8,7 @@ export class FunctionNode extends Node {
         super({args}, {name});
     }
 
-    public evaluate(functions: {[name: string]: Function}, identifiers: object): any {
-        return (<any>functions)[(<any>this.attributes)['name']].apply(null, (<any>this.nodes)['args'].evaluate(functions, identifiers));
+    public evaluate(functions: Functions, identifiers: Identifiers): any {
+        return functions[this.attributes.name].apply(null, this.nodes.args.evaluate(functions, identifiers));
     }
 }

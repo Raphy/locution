@@ -1,3 +1,5 @@
+import { Functions } from '../functions';
+import { Identifiers } from '../identifiers';
 import { Node } from './node';
 
 export class ArrayNode extends Node {
@@ -12,13 +14,7 @@ export class ArrayNode extends Node {
         this._nextIndex++;
     }
 
-    public addItems(nodes: Node[]) {
-        nodes.map((node: Node) => {
-            this.addItem(node);
-        });
-    }
-
-    public evaluate(functions: {[name: string]: Function}, identifiers: object): any[] {
+    public evaluate(functions: Functions, identifiers: Identifiers): any[] {
         const results: any[] = [];
 
         Object.getOwnPropertyNames(this.nodes).sort().map((index: string) => {

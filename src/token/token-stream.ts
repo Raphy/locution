@@ -36,6 +36,7 @@ export class TokenStream {
         const token: Token = this.token;
 
         if (!this.token.isEquals(type, value)) {
+            // tslint:disable-next-line:max-line-length
             throw new SyntaxError(`${message ? message + '. ' : ''}Unexpected token "${token.type}" of value "${token.value}" ("${type}" expected${value ? ` with value "${value}"` : ''})`, token.position, this.expression);
         }
 
