@@ -6,16 +6,7 @@ export class FunctionNode extends Node {
         super({args}, {name});
     }
 
-    public evaluate(identifiers: object): any {
-        // todo: enable a function registry instead of using identifiers
-
-        // todo: check if is a function
-        /*
-        function isFunction(functionToCheck) {
-            return functionToCheck && {}.toString.call(functionToCheck) === '[object Function]';
-        }
-         */
-
-        return (<any>identifiers)[(<any>this.attributes)['name']].apply(null, (<any>this.nodes)['args'].evaluate(identifiers));
+    public evaluate(functions: {[name: string]: Function}, identifiers: object): any {
+        return (<any>functions)[(<any>this.attributes)['name']].apply(null, (<any>this.nodes)['args'].evaluate(functions, identifiers));
     }
 }

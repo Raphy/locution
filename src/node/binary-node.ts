@@ -5,9 +5,9 @@ export class BinaryNode extends Node {
         super({left, right}, {operator});
     }
 
-    public evaluate(identifiers: object): any {
-        const left: any = this.nodes.left.evaluate(identifiers);
-        const right: any = this.nodes.right.evaluate(identifiers);
+    public evaluate(functions: {[name: string]: Function}, identifiers: object): any {
+        const left: any = this.nodes.left.evaluate(functions, identifiers);
+        const right: any = this.nodes.right.evaluate(functions, identifiers);
 
     const operatorMap: {[operator: string]: (left: any, right: any) => any} = {
             '+': (l: any, r: any) => Number(l) + Number(r),

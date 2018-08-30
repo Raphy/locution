@@ -5,9 +5,9 @@ export class ArrayCallNode extends Node {
         super({array, index}, {});
     }
 
-    public evaluate(identifiers: object): any {
-        const array = this.nodes.array.evaluate(identifiers);
-        const index = this.nodes.index.evaluate(identifiers);
+    public evaluate(functions: {[name: string]: Function}, identifiers: object): any {
+        const array = this.nodes.array.evaluate(functions, identifiers);
+        const index = this.nodes.index.evaluate(functions, identifiers);
 
         return array[index];
     }

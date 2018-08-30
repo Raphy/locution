@@ -5,8 +5,8 @@ export class UnaryNode extends Node {
         super({node}, {operator});
     }
 
-    public evaluate(identifiers: object): any {
-        const value: any = (<any>this.nodes)['node'].evaluate(identifiers);
+    public evaluate(functions: {[name: string]: Function}, identifiers: object): any {
+        const value: any = (<any>this.nodes)['node'].evaluate(functions, identifiers);
 
         switch ((<any>this.attributes)['operator']) {
             case '!':

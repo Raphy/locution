@@ -13,7 +13,7 @@ export class ObjectNode extends Node {
         this._currentIndex++;
     }
 
-    public evaluate(identifiers: object): object {
+    public evaluate(functions: {[name: string]: Function}, identifiers: object): object {
         let nodeNamesPairs: string[][] = [];
         const properties = Object.getOwnPropertyNames(this.nodes);
         for (let i = 0; i < properties.length; i += 2) {
@@ -22,8 +22,8 @@ export class ObjectNode extends Node {
 
         let object: object = {};
         nodeNamesPairs.map((nodeNamesPair: string[]) => {
-            const key = this.nodes[nodeNamesPair[0]].evaluate(identifiers);
-            object[key] = this.nodes[nodeNamesPair[1]].evaluate(identifiers);
+            const key = this.nodes[nodeNamesPair[0]].evaluate(functions, identifiers);
+            object[key] = this.nodes[nodeNamesPair[1]].evaluate(functions, identifiers);
         });
 
         return object;

@@ -5,7 +5,7 @@ export class IdentifierNode extends Node {
         super({}, {identifier});
     }
 
-    public evaluate(identifiers: object): any {
+    public evaluate(_: {[name: string]: Function}, identifiers: object): any {
         return (<any>identifiers)[(<any>this.attributes)['identifier']];
     }
 }

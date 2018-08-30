@@ -18,11 +18,11 @@ export class ArrayNode extends Node {
         });
     }
 
-    public evaluate(identifiers: object): any[] {
+    public evaluate(functions: {[name: string]: Function}, identifiers: object): any[] {
         const results: any[] = [];
 
         Object.getOwnPropertyNames(this.nodes).sort().map((index: string) => {
-            results.push(this.nodes[index].evaluate(identifiers));
+            results.push(this.nodes[index].evaluate(functions, identifiers));
         });
 
         return results;

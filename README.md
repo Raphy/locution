@@ -9,10 +9,14 @@ _This version is a copy from ExpressionLanguage component of Symfony (PHP) frame
 ```typescript
 import { Locution } from 'locution';
 
-const locution = new Locution();
+const locution = new Locution(
+    {
+        foo: (bar: number) => bar * 2
+    }
+);
 
 locution.evaluate(
-    'my_var && ("a string" matches "foo" || my_var in my_array)',
+    '(foo(10) / my_var) && ("a string" matches "foo" || my_var in my_array)',
     {
         my_var: 42,
         my_array: [21, 42, 45]
@@ -24,6 +28,5 @@ locution.evaluate(
 
 - Unit Tests
 - Make some checks in nodes
-- Implement a "function registry" for the Parser
 - Setup a CI for the repo
 - Generate a website for the documentation

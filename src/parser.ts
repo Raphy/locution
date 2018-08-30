@@ -39,6 +39,9 @@ export class Parser {
         '**': {precedence: 200, associativity: 'right'},
     };
 
+    constructor(private _functions: {[name: string]: Function}) {
+    }
+
     public parse(tokenStream: TokenStream, identifiers: object): Node {
         const rootNode: Node = this._parseExpression(tokenStream, identifiers);
         if (tokenStream.token.type !== TokenType.END_OF_EXPRESSION) {
@@ -112,7 +115,7 @@ export class Parser {
                     default:
                         if ('(' === tokenStream.token.value) {
                             // todo: use functions registry instead of identifiers
-                            if (!identifiers.hasOwnProperty(token.value)) {
+                            if (!this._functions.hasOwnProperty(token.value)) {
                                 throw new SyntaxError(`The function "${token.value}" does not exist`, token.position, tokenStream.expression);
                             }
 

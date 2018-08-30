@@ -11,11 +11,11 @@ export class Node {
 
     }
 
-    public evaluate(identifiers: object): any {
+    public evaluate(functions: {[name: string]: Function}, identifiers: object): any {
         const results: {[name: string]: any} = {};
 
         Object.getOwnPropertyNames(this._nodes).map((name: string) => {
-            results[name] = this._nodes[name].evaluate(identifiers);
+            results[name] = this._nodes[name].evaluate(functions, identifiers);
         });
 
         return results;

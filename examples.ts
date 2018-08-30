@@ -1,6 +1,11 @@
 import { Locution } from './src/locution';
 
-const locution = new Locution();
+const locution = new Locution(
+    {
+        get42: () => 42,
+        add: (a: number, b: number) => a + b
+    }
+);
 
 const tests = [
     {expression: '42', identifiers: {}, result: 42},
@@ -38,6 +43,11 @@ const tests = [
     {expression: '{"foo": "bar", titi: 42, tutu: my_var}', identifiers: {my_var: 21}, result: {foo: 'bar', titi: 42, tutu: 21}},
     {expression: 'true && false || false', identifiers: {}, result: false},
     {expression: 'true && (false || true)', identifiers: {}, result: true},
+    {expression: 'add(get42(), 21)', identifiers: {}, result: 63},
+    {expression: '4 * 2 + 2', identifiers: {}, result: 10},
+    {expression: '4 / 2 + 2', identifiers: {}, result: 4},
+    {expression: '4 * (2 + 2)', identifiers: {}, result: 16},
+    {expression: '4 / (2 + 2)', identifiers: {}, result: 1},
 
 ];
 

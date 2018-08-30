@@ -5,7 +5,7 @@ export class ConstantNode extends Node {
         super({}, {value});
     }
 
-    public evaluate(_: object): any {
+    public evaluate(): any {
         return (<any>this.attributes)['value'];
     }
 }

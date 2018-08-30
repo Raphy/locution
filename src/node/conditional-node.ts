@@ -5,11 +5,11 @@ export class ConditionalNode extends Node {
         super({conditionNode, trueCondition, falseCondition}, {});
     }
 
-    public evaluate(identifiers: object): any {
-        if (this.nodes.conditionNode.evaluate(identifiers)) {
-            return this.nodes.trueCondition.evaluate(identifiers);
+    public evaluate(functions: {[name: string]: Function}, identifiers: object): any {
+        if (this.nodes.conditionNode.evaluate(functions, identifiers)) {
+            return this.nodes.trueCondition.evaluate(functions, identifiers);
         }
 
-        return this.nodes.falseCondition.evaluate(identifiers)
+        return this.nodes.falseCondition.evaluate(functions, identifiers)
     }
 }
