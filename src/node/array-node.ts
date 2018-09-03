@@ -14,13 +14,14 @@ export class ArrayNode extends Node {
         this._nextIndex++;
     }
 
-    public evaluate(functions: Functions, identifiers: Identifiers): any[] {
+    public async evaluate(functions: Functions, identifiers: Identifiers): Promise<any[]> {
         const results: any[] = [];
+        const properties = Object.getOwnPropertyNames(this.nodes).sort();
 
-        Object.getOwnPropertyNames(this.nodes).sort().map((index: string) => {
-            results.push(this.nodes[index].evaluate(functions, identifiers));
-        });
+        for (const property of properties) {
+            results.push(await this.nodes[property].evaluate(functions, identifiers));
+        }
 
-        return results;
+        return new Promise<any[]>((resolve) => resolve(results));
     }
 }

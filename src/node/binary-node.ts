@@ -7,10 +7,7 @@ export class BinaryNode extends Node {
         super({left, right}, {operator});
     }
 
-    public evaluate(functions: Functions, identifiers: Identifiers): any {
-        const left: any = this.nodes.left.evaluate(functions, identifiers);
-        const right: any = this.nodes.right.evaluate(functions, identifiers);
-
+    public async evaluate(functions: Functions, identifiers: Identifiers): Promise<any> {
         const operatorMap: {[operator: string]: (left: any, right: any) => any} = {
             '+': (l: any, r: any) => Number(l) + Number(r),
             '-': (l: any, r: any) => Number(l) - Number(r),
@@ -45,6 +42,9 @@ export class BinaryNode extends Node {
             '..': (l: any, r: any) => Array.apply(null, {length: r - l}).map(Function.call, Number).map((_, i) => i + l),
         };
 
-        return operatorMap[this.attributes.operator](left, right);
+        const left: any = await this.nodes.left.evaluate(functions, identifiers);
+        const right: any = await this.nodes.right.evaluate(functions, identifiers);
+
+        return new Promise<any>((resolve) => resolve(operatorMap[this.attributes.operator](left, right)));
     }
 }

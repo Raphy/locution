@@ -9,19 +9,19 @@ export class MethodCallNode extends Node {
         super({object, method, args}, {});
     }
 
-    public evaluate(functions: Functions, identifiers: Identifiers): any {
-        const object = this.nodes.object.evaluate(functions, identifiers);
+    public async evaluate(functions: Functions, identifiers: Identifiers): Promise<any> {
+        const object = await this.nodes.object.evaluate(functions, identifiers);
 
         // todo: check if object is an object
 
-        const method = this.nodes.method.evaluate(functions, identifiers);
+        const method = await this.nodes.method.evaluate(functions, identifiers);
 
         if (false === Object.hasOwnProperty.call(object, method)) {
             throw new LocutionError(`Unable to call method \`${this.nodes.method.attributes.value}\``);
         }
 
-        const args = this.nodes.args.evaluate(functions, identifiers);
+        const args = await this.nodes.args.evaluate(functions, identifiers);
 
-        return object[method].apply(object, args);
+        return new Promise<any>((resolve) => resolve(object[method].apply(object, args)));
     }
 }

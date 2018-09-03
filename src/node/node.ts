@@ -13,13 +13,13 @@ export class Node {
     constructor(protected _nodes: {[name: string]: Node} = {}, protected _attributes: {[name: string]: any} = {}) {
     }
 
-    public evaluate(functions: Functions, identifiers: Identifiers): any {
+    public async evaluate(functions: Functions, identifiers: Identifiers): Promise<any> {
         const results: {[name: string]: any} = {};
 
-        Object.getOwnPropertyNames(this._nodes).map((name: string) => {
-            results[name] = this._nodes[name].evaluate(functions, identifiers);
+        await Object.getOwnPropertyNames(this._nodes).map(async (name: string) => {
+            results[name] = await this._nodes[name].evaluate(functions, identifiers);
         });
 
-        return results;
+        return new Promise<any>((resolve) => resolve(results));
     }
 }

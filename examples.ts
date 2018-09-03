@@ -3,7 +3,8 @@ import { Locution } from './src/locution';
 const locution = new Locution(
     {
         get42: () => 42,
-        add: (a: number, b: number) => a + b
+        add: (a: number, b: number) => a + b,
+        foo: () => 42,
     }
 );
 
@@ -33,7 +34,7 @@ const tests = [
     {expression: '"hello world" matches "bar"', identifiers: {}, result: false},
     {expression: 'true || false ? "yes" : "no"', identifiers: {}, result: 'yes'},
     {expression: 'true && false ? "yes" : "no"', identifiers: {}, result: 'no'},
-    {expression: 'foo()', identifiers: {foo: () => 42}, result: 42},
+    {expression: 'foo()', identifiers: {}, result: 42},
     {expression: '"foo" in bar', identifiers: {bar: ['foo', 'bar']}, result: true},
     {expression: '"miss" in bar', identifiers: {bar: ['foo', 'bar']}, result: false},
     {expression: '"foo" not in bar', identifiers: {bar: ['foo', 'bar']}, result: false},
@@ -48,11 +49,15 @@ const tests = [
     {expression: '4 / 2 + 2', identifiers: {}, result: 4},
     {expression: '4 * (2 + 2)', identifiers: {}, result: 16},
     {expression: '4 / (2 + 2)', identifiers: {}, result: 1},
-
+    {expression: 'my_promise + 2', identifiers: {my_promise: new Promise<number>(resolve => resolve(3))}, result: 5},
 ];
 
 
 const assert = (actual: any, expected: any) => {
+    if (actual === expected) {
+        return true;
+    }
+
     if (typeof expected === 'object' && typeof expected === 'object') {
         const expectedProperties = Object.getOwnPropertyNames(expected);
         const actualProperties = Object.getOwnPropertyNames(actual);
@@ -71,15 +76,16 @@ const assert = (actual: any, expected: any) => {
         return !isErred;
     }
 
-    return actual === expected;
+    return false;
 };
 
-tests.map((test) => {
+tests.map(async (test) => {
     try {
-        const result = locution.evaluate(test.expression, test.identifiers);
+        const result = await locution.evaluate(test.expression, test.identifiers);
         console.log(`${assert(result, test.result) ? '[✓]' : '[x]'} \`${test.expression}\``, result, test.result);
     } catch (e) {
         console.log(`[x] \`${test.expression}\` => ${e.message}`);
+        console.log(e);
     }
 
 });

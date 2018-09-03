@@ -8,17 +8,17 @@ export class PropertyCallNode extends Node {
         super({object, property}, {});
     }
 
-    public evaluate(functions: Functions, identifiers: Identifiers): any {
-        const object = this.nodes.object.evaluate(functions, identifiers);
+    public async evaluate(functions: Functions, identifiers: Identifiers): Promise<any> {
+        const object = await this.nodes.object.evaluate(functions, identifiers);
 
         // todo: check if object is an object
 
-        const property = this.nodes.property.evaluate(functions, identifiers);
+        const property = await this.nodes.property.evaluate(functions, identifiers);
 
         if (false === Object.hasOwnProperty.call(object, property)) {
             throw new LocutionError(`Unable to get property \`${this.nodes.property.attributes.value}\``);
         }
 
-        return object[property];
+        return new Promise<any>((resolve) => resolve(object[property]));
     }
 }

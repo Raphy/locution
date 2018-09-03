@@ -7,10 +7,10 @@ export class ArrayCallNode extends Node {
         super({array, index}, {});
     }
 
-    public evaluate(functions: Functions, identifiers: Identifiers): any {
-        const array = this.nodes.array.evaluate(functions, identifiers);
-        const index = this.nodes.index.evaluate(functions, identifiers);
+    public async evaluate(functions: Functions, identifiers: Identifiers): Promise<any> {
+        const array = await this.nodes.array.evaluate(functions, identifiers);
+        const index = await this.nodes.index.evaluate(functions, identifiers);
 
-        return array[index];
+        return new Promise<any>((resolve) => resolve(array[index]));
     }
 }

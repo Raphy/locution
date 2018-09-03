@@ -7,19 +7,17 @@ export class UnaryNode extends Node {
         super({node}, {operator});
     }
 
-    public evaluate(functions: Functions, identifiers: Identifiers): any {
-        const value: any = this.nodes.node.evaluate(functions, identifiers);
+    public async evaluate(functions: Functions, identifiers: Identifiers): Promise<any> {
+        const value: any = await this.nodes.node.evaluate(functions, identifiers);
 
         switch (this.attributes.operator) {
             case '!':
             case 'not':
-                return !value;
+                return new Promise<any>((resolve) => resolve(!value));
             case '-':
-                return -value;
+                return new Promise<any>((resolve) => resolve(-value));
             default:
-                return value;
+                return new Promise<any>((resolve) => resolve(value));
         }
-
-        return value;
     }
 }

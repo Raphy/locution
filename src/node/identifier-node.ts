@@ -6,7 +6,11 @@ export class IdentifierNode extends Node {
         super({}, {identifier});
     }
 
-    public evaluate(_, identifiers: Identifiers): any {
+    public async evaluate(_, identifiers: Identifiers): Promise<any> {
+        if (identifiers[this.attributes.identifier] instanceof Promise) {
+            return await identifiers[this.attributes.identifier];
+        }
+
         return identifiers[this.attributes.identifier];
     }
 }
