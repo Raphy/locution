@@ -5,7 +5,7 @@ export class ConstantNode extends Node {
         super({}, {value});
     }
 
-    public evaluate(): any {
-        return this.attributes.value;
+    public evaluate(): Promise<any> {
+        return new Promise<any>((resolve) => resolve(this.attributes.value));
     }
 }

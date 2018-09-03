@@ -15,7 +15,7 @@ export class ObjectNode extends Node {
         this._currentIndex++;
     }
 
-    public evaluate(functions: Functions, identifiers: Identifiers): object {
+    public async evaluate(functions: Functions, identifiers: Identifiers): Promise<object> {
         const nodeNamesPairs: string[][] = [];
         const properties = Object.getOwnPropertyNames(this.nodes);
         for (let i = 0; i < properties.length; i += 2) {
@@ -23,11 +23,11 @@ export class ObjectNode extends Node {
         }
 
         const object: object = {};
-        nodeNamesPairs.map((nodeNamesPair: string[]) => {
-            const key = this.nodes[nodeNamesPair[0]].evaluate(functions, identifiers);
-            object[key] = this.nodes[nodeNamesPair[1]].evaluate(functions, identifiers);
-        });
+        for (const nodeNamesPair of nodeNamesPairs) {
+            const key = await this.nodes[nodeNamesPair[0]].evaluate(functions, identifiers);
+            object[key] = await this.nodes[nodeNamesPair[1]].evaluate(functions, identifiers);
+        }
 
-        return object;
+        return new Promise<object>((resolve) => resolve(object));
     }
 }

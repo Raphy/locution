@@ -12,7 +12,7 @@ export class Locution {
         this._parser = new Parser(this._functions);
     }
 
-    public evaluate(expression: string, identifiers: Identifiers = {}): any {
+    public evaluate(expression: string, identifiers: Identifiers = {}): Promise<any> {
         return this._parser.parse(this._lexer.tokenize(expression), identifiers).evaluate(this._functions, identifiers);
     }
 }

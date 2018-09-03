@@ -8,7 +8,9 @@ export class FunctionNode extends Node {
         super({args}, {name});
     }
 
-    public evaluate(functions: Functions, identifiers: Identifiers): any {
-        return functions[this.attributes.name].apply(null, this.nodes.args.evaluate(functions, identifiers));
+    public async evaluate(functions: Functions, identifiers: Identifiers): Promise<any> {
+        const args = await this.nodes.args.evaluate(functions, identifiers);
+
+        return new Promise<any>((resolve) => resolve(functions[this.attributes.name].apply(null, args)));
     }
 }

@@ -7,9 +7,9 @@ export class ConditionalNode extends Node {
         super({conditionNode, trueCondition, falseCondition}, {});
     }
 
-    public evaluate(functions: Functions, identifiers: Identifiers): any {
-        if (this.nodes.conditionNode.evaluate(functions, identifiers)) {
-            return this.nodes.trueCondition.evaluate(functions, identifiers);
+    public async evaluate(functions: Functions, identifiers: Identifiers): Promise<any> {
+        if (await this.nodes.conditionNode.evaluate(functions, identifiers)) {
+            return await this.nodes.trueCondition.evaluate(functions, identifiers);
         }
 
         return this.nodes.falseCondition.evaluate(functions, identifiers);
